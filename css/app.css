@@ -27,7 +27,12 @@ body {
     align-items: center;
     flex-direction: column;
 }
-
+.display-content{
+    display: block;
+}
+.undisplay{
+    display: none;
+}
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
@@ -74,13 +79,54 @@ h1 {
 .deck .card.show {
     font-size: 33px;
 }
-
+/* animations referred from css tricks */
 .deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    transform-origin: bottom;
+    animation-duration: 1.5s;
+    animation-iteration-count: once;
+    animation-name: bounce-6;
+    animation-timing-function: ease;
+}
+@keyframes bounce-6 {
+    0%   { transform: scale(1,1)      translateY(0); }
+    10%  { transform: scale(1.1,.9)   translateY(0); }
+    30%  { transform: scale(.9,1.1)   translateY(-40px); }
+    50%  { transform: scale(1.05,.95) translateY(0); }
+    57%  { transform: scale(1,1)      translateY(-7px); }
+    64%  { transform: scale(1,1)      translateY(0); }
+    100% { transform: scale(1,1)      translateY(0); }
 }
 
+.deck .card.unmatch {
+    cursor: default;
+    background: hsl(17, 98%, 40%);
+    font-size: 33px;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
 /*
  * Styles for the Score Panel
  */
@@ -106,4 +152,41 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+.modal {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    text-align: center;
+    padding-top: 100px;
+    transform-origin: bottom;
+    animation-duration: 1.5s;
+    animation-iteration-count: once;
+    animation-name: bounce-6;
+    animation-timing-function: ease;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.428;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #aa7ecd;
+    border-color: #aa7ecd;
+    color: white;
+}
+.fa-star {
+    color: #E7711B;
+}
+.star-display {
+    visibility: collapse;
+}
+.fa-check {
+    color: #aa7ecd;
 }

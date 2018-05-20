@@ -1,17 +1,28 @@
-//var move
-//var match
+let minutesLabel = document.getElementById('minutes');
+let secondsLabel = document.getElementById('seconds');
+let second = 0;
+let minute = 0;
+let hour = 0;
+var myTimer;
+let move = 0;
+let match = 0;
+let starCount = 0;
+let starEarned;
 const deck = document.querySelector('.deck');
-
+const moveEl = document.querySelector('.moves');
+const mainDiv = document.querySelector('.main');
+const modalDiv = document.querySelector('.modal');
+const playBtn = document.querySelector('.play-btn');
+const resetBtn = document.querySelector('.restart');
+const starsHtmlCollection = document.getElementsByClassName('sub-star');
+const starsArr = Array.from( starsHtmlCollection );
 /*
  * Create a list that holds all of your cards
  */
 let cardListHtmlCollection = document.getElementsByClassName('card');
-// console.log(cardListHtmlCollection)
 
 //let cardsArray = [...cardListHtmlCollection];
-let cardsArray = Array.from( cardListHtmlCollection )
- console.log(cardsArray);
-
+let cardsArray = Array.from( cardListHtmlCollection );
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -19,11 +30,11 @@ let cardsArray = Array.from( cardListHtmlCollection )
  *   - add each card's HTML to the page
  */
 let shuffledArrayOfCards = shuffle(cardsArray)
-console.log('shuffledArr' + shuffledArrayOfCards);
+//console.log('shuffledArr' + shuffledArrayOfCards);
 for (let card of shuffledArrayOfCards){
     deck.appendChild(card);
 }
-console.log('appended deck' + (Array.from(document.getElementsByClassName('card')).length))
+//console.log('appended deck' + (Array.from(document.getElementsByClassName('card')).length))
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -58,44 +69,123 @@ deck.addEventListener('click', function(event){
         addToArrOfOpenCards(event);
     }
 })
+function startTimer(){
+    myTimer = setInterval(function(){
+        minutesLabel.innerHTML = minute + 'mins ';
+        secondsLabel.innerHTML = second + 'secs';
+        second++;
+        if (second === 60){
+            minute++;
+            second = 0;
+        }
+        if (minute === 60){
+            hour++;
+            minute = 0;
+        }
+    }, 1000);
+    //console.log("my timer is ",myTimer)
+}
 
 function showCard(evt){
-    //console.log("event: ", evt.target.getAttribute('value'))
-    //console.log("event class names: ", evt.target.classList)
     evt.target.classList.add('show', 'open');
-    //console.log("event after adding class " , evt.target.classList)
 }
 function addToArrOfOpenCards(evt){
-    let move = 0
-    let match = 0;
-    console.log("value of el: ", evt.target.value);
     arrOfOpenCards.push(evt.target);
-
     if (arrOfOpenCards.length > 1){
-        console.log('INSIDE LEN > 1')
-        //console.log( "arrOfOpenCardsAfter, ", arrOfOpenCards[0].getAttribute('value'))
-        //console.log( "evt.target, ", arrOfOpenCards[1].getAttribute('value'))
-        //console.log(arrOfOpenCards[0].getAttribute('value') === arrOfOpenCards[1].getAttribute('value'))
-
         if (arrOfOpenCards[0].getAttribute('value') === arrOfOpenCards[1].getAttribute('value')){
-            arrOfOpenCards[0].classList.add('match');
-            evt.target.classList.add('match');
-            arrOfOpenCards[0].classList.remove('show', 'open');
-            evt.target.classList.remove('show', 'open');
-            arrOfOpenCards.splice(0);
-
+            matchedCards(evt)
         }
         else {
-            setTimeout(function(){
-                arrOfOpenCards[0].classList.remove('show', 'open');
-                arrOfOpenCards[1].classList.remove('show', 'open');
-                arrOfOpenCards.splice(0);
+            unMatchedCards();
+        }
+        incMove();
+    }
+}
+function matchedCards(event){
+    arrOfOpenCards[0].classList.add('match');
+            event.target.classList.add('match');
+            arrOfOpenCards[0].classList.remove('show', 'open');
+            event.target.classList.remove('show', 'open');
+            arrOfOpenCards.splice(0);
+            match++;
+            //move++
+            if (match === 8){
+                setTimeout(function(){
+                    allMatched();
+                }, 500)
 
-            }, 1000)
+            }
+}
+function unMatchedCards(){
+    setTimeout(function(){
+        arrOfOpenCards[0].classList.add('unmatch');
+        arrOfOpenCards[1].classList.add('unmatch');
+        arrOfOpenCards[0].classList.remove('show', 'open');
+        arrOfOpenCards[1].classList.remove('show', 'open');
 
+    }, 500)
+    setTimeout(function(){
+        arrOfOpenCards[0].classList.remove('unmatch');
+        arrOfOpenCards[1].classList.remove('unmatch');
+        arrOfOpenCards.splice(0);
+    }, 1100)
+}
+function incMove(){
+    move++;
+    if (move === 1){
+        startTimer();
+    }
+    moveEl.textContent = move;
+    if (move > 8 && move < 12){
+            starsArr[2].classList.add('star-display')
+    }
+    else if (move > 11 && move < 19) {
+        for (let i = 2; i > 0; i--){
+            starsArr[i].classList.add('star-display')
         }
     }
-
-    move += 1;
-    //display it on the page
+}
+function allMatched(){
+    setTimeout(function(){
+        mainDiv.classList.remove('display-content');
+        mainDiv.classList.add('undisplay');
+        modalDiv.classList.remove('undisplay');
+        modalDiv.classList.add('display-content');
+        document.querySelector('.add-moves').textContent = move;
+        starsArr.forEach(function(star){
+            if (star.classList.contains('star-display')){
+                starCount++;
+            }
+            starEarned = 3 - starCount;
+        })
+        document.querySelector('.add-star').textContent = starEarned;
+        document.querySelector('.mts').textContent = minute;
+        document.querySelector('.secs').textContent = second;
+    }, 1000)
+}
+playBtn.addEventListener('click', function(){
+    mainDiv.classList.remove('undisplay');
+    mainDiv.classList.add('display-content');
+    modalDiv.classList.remove('display-content');
+    modalDiv.classList.add('undisplay');
+    resetGame();
+})
+resetBtn.addEventListener('click', function(){
+    resetGame();
+})
+function resetGame(){
+    minutesLabel.innerHTML = 0 + 'mins ';
+    secondsLabel.innerHTML = 0 + 'secs';
+    minute = 0;
+    second = 0;
+    clearInterval(myTimer);
+    move = 0;
+    match = 0;
+    moveEl.textContent = move;
+    cardsArray.forEach(function(card){
+        card.classList.remove('match');
+    })
+    starsArr.forEach(function(star){
+        star.classList.remove('star-display');
+    })
 }

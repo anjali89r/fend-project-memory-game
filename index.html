@@ -6,81 +6,98 @@
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>Matching Game</h1>
-        </header>
+        <div class="main display-content">
+            <header>
+                <h1>Matching Game</h1>
+            </header>
 
-        <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
+            <section class="score-panel">
+                <ul class="stars">
+                    <li class="sub-star"><i class="fa fa-star"></i></li>
+                    <li class="sub-star"><i class="fa fa-star"></i></li>
+                    <li class="sub-star"><i class="fa fa-star"></i></li>
+                </ul>
 
-        	<span class="moves">3</span> Moves
+                <span class="moves">0</span> Moves
 
-            <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
-        </section>
+                <div class="restart">
+                    <i class="fa fa-repeat"></i>
+                </div>
 
-        <ul class="deck">
-            <li class="card" value="diamond">
-                <i class="fa fa-diamond"></i>
-            </li>
-            <li class="card" value="plane">
-                <i class="fa fa-paper-plane-o"></i>
-            </li>
-            <li class="card" value="anchor">
-                <i class="fa fa-anchor"></i>
-            </li>
-            <li class="card" value="bolt">
-                <i class="fa fa-bolt"></i>
-            </li>
-            <li class="card" value="cube">
-                <i class="fa fa-cube"></i>
-            </li>
-            <li class="card" value="anchor">
-                <i class="fa fa-anchor"></i>
-            </li>
-            <li class="card" value="leaf">
-                <i class="fa fa-leaf"></i>
-            </li>
-            <li class="card" value="bicycle">
-                <i class="fa fa-bicycle"></i>
-            </li>
-            <li class="card" value="diamond">
-                <i class="fa fa-diamond"></i>
-            </li>
-            <li class="card" value="bomb">
-                <i class="fa fa-bomb"></i>
-            </li>
-            <li class="card" value="leaf">
-                <i class="fa fa-leaf"></i>
-            </li>
-            <li class="card" value="bomb">
-                <i class="fa fa-bomb"></i>
-            </li>
-            <li class="card" value="bolt">
-                <i class="fa fa-bolt"></i>
-            </li>
-            <li class="card" value="bicycle">
-                <i class="fa fa-bicycle"></i>
-            </li>
-            <li class="card" value="plane">
-                <i class="fa fa-paper-plane-o"></i>
-            </li>
-            <li class="card" value="cube">
-                <i class="fa fa-cube"></i>
-            </li>
-        </ul>
+                <div class="timer">
+                        <label id="minutes">00</label>:<label id="seconds">00</label>
+                </div>
+
+            </section>
+
+            <ul class="deck">
+                <li class="card" value="diamond">
+                    <i class="fa fa-diamond"></i>
+                </li>
+                <li class="card" value="plane">
+                    <i class="fa fa-paper-plane-o"></i>
+                </li>
+                <li class="card" value="anchor">
+                    <i class="fa fa-anchor"></i>
+                </li>
+                <li class="card" value="bolt">
+                    <i class="fa fa-bolt"></i>
+                </li>
+                <li class="card" value="cube">
+                    <i class="fa fa-cube"></i>
+                </li>
+                <li class="card" value="anchor">
+                    <i class="fa fa-anchor"></i>
+                </li>
+                <li class="card" value="leaf">
+                    <i class="fa fa-leaf"></i>
+                </li>
+                <li class="card" value="bicycle">
+                    <i class="fa fa-bicycle"></i>
+                </li>
+                <li class="card" value="diamond">
+                    <i class="fa fa-diamond"></i>
+                </li>
+                <li class="card" value="bomb">
+                    <i class="fa fa-bomb"></i>
+                </li>
+                <li class="card" value="leaf">
+                    <i class="fa fa-leaf"></i>
+                </li>
+                <li class="card" value="bomb">
+                    <i class="fa fa-bomb"></i>
+                </li>
+                <li class="card" value="bolt">
+                    <i class="fa fa-bolt"></i>
+                </li>
+                <li class="card" value="bicycle">
+                    <i class="fa fa-bicycle"></i>
+                </li>
+                <li class="card" value="plane">
+                    <i class="fa fa-paper-plane-o"></i>
+                </li>
+                <li class="card" value="cube">
+                    <i class="fa fa-cube"></i>
+                </li>
+            </ul>
+        </div>
+
     </div>
+    <div class="modal undisplay">
+        <div><i class="fa fa-check fa-5x" aria-hidden="true"></i></div>
+            <h1>Congratulations! You Won in <br><span class="mts"></span> mts and <span class="secs"></span> seconds!</h1>
+            <p>With <span class="add-moves"></span> moves and  <span class="add-star"></span> star</p><br>
+            <span>Wooooooo!</span><br><br>
+            <button class="btn btn-primary play-btn">Play again</button>
+        </div>
 
     <script src="js/app.js"></script>
 </body>
 </html>
+
