@@ -1,7 +1,16 @@
+//var move
+//var match
+const deck = document.querySelector('.deck');
+
 /*
  * Create a list that holds all of your cards
  */
+let cardListHtmlCollection = document.getElementsByClassName('card');
+// console.log(cardListHtmlCollection)
 
+//let cardsArray = [...cardListHtmlCollection];
+let cardsArray = Array.from( cardListHtmlCollection )
+ console.log(cardsArray);
 
 /*
  * Display the cards on the page
@@ -9,7 +18,12 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
+let shuffledArrayOfCards = shuffle(cardsArray)
+console.log('shuffledArr' + shuffledArrayOfCards);
+for (let card of shuffledArrayOfCards){
+    deck.appendChild(card);
+}
+console.log('appended deck' + (Array.from(document.getElementsByClassName('card')).length))
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -36,3 +50,52 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+const arrOfOpenCards = [];
+
+deck.addEventListener('click', function(event){
+    if (event.target.nodeName === 'LI'){
+        showCard(event);
+        addToArrOfOpenCards(event);
+    }
+})
+
+function showCard(evt){
+    //console.log("event: ", evt.target.getAttribute('value'))
+    //console.log("event class names: ", evt.target.classList)
+    evt.target.classList.add('show', 'open');
+    //console.log("event after adding class " , evt.target.classList)
+}
+function addToArrOfOpenCards(evt){
+    let move = 0
+    let match = 0;
+    console.log("value of el: ", evt.target.value);
+    arrOfOpenCards.push(evt.target);
+
+    if (arrOfOpenCards.length > 1){
+        console.log('INSIDE LEN > 1')
+        //console.log( "arrOfOpenCardsAfter, ", arrOfOpenCards[0].getAttribute('value'))
+        //console.log( "evt.target, ", arrOfOpenCards[1].getAttribute('value'))
+        //console.log(arrOfOpenCards[0].getAttribute('value') === arrOfOpenCards[1].getAttribute('value'))
+
+        if (arrOfOpenCards[0].getAttribute('value') === arrOfOpenCards[1].getAttribute('value')){
+            arrOfOpenCards[0].classList.add('match');
+            evt.target.classList.add('match');
+            arrOfOpenCards[0].classList.remove('show', 'open');
+            evt.target.classList.remove('show', 'open');
+            arrOfOpenCards.splice(0);
+
+        }
+        else {
+            setTimeout(function(){
+                arrOfOpenCards[0].classList.remove('show', 'open');
+                arrOfOpenCards[1].classList.remove('show', 'open');
+                arrOfOpenCards.splice(0);
+
+            }, 1000)
+
+        }
+    }
+
+    move += 1;
+    //display it on the page
+}
