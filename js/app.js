@@ -37,7 +37,7 @@ for (let card of shuffledArrayOfCards){
 //console.log('appended deck' + (Array.from(document.getElementsByClassName('card')).length))
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -88,6 +88,7 @@ function startTimer(){
 
 function showCard(evt){
     evt.target.classList.add('show', 'open');
+    evt.target.style.pointerEvents = 'none';
 }
 function addToArrOfOpenCards(evt){
     arrOfOpenCards.push(evt.target);
@@ -96,7 +97,8 @@ function addToArrOfOpenCards(evt){
             matchedCards(evt)
         }
         else {
-            unMatchedCards();
+
+            unMatchedCards(evt);
         }
         incMove();
     }
@@ -116,8 +118,10 @@ function matchedCards(event){
 
             }
 }
-function unMatchedCards(){
+function unMatchedCards(evt){
     setTimeout(function(){
+        evt.target.style.pointerEvents = 'auto';
+        arrOfOpenCards[0].style.pointerEvents = 'auto';
         arrOfOpenCards[0].classList.add('unmatch');
         arrOfOpenCards[1].classList.add('unmatch');
         arrOfOpenCards[0].classList.remove('show', 'open');
@@ -145,6 +149,7 @@ function incMove(){
         }
     }
 }
+//after all  cards have been matched display the modal
 function allMatched(){
     setTimeout(function(){
         mainDiv.classList.remove('display-content');
@@ -163,6 +168,7 @@ function allMatched(){
         document.querySelector('.secs').textContent = second;
     }, 1000)
 }
+
 playBtn.addEventListener('click', function(){
     mainDiv.classList.remove('undisplay');
     mainDiv.classList.add('display-content');
@@ -171,9 +177,22 @@ playBtn.addEventListener('click', function(){
     resetGame();
 })
 resetBtn.addEventListener('click', function(){
+    let shuffledArrayOfCardsReset = shuffle(cardsArray)
+    for (let card of shuffledArrayOfCardsReset){
+        if (card.classList.contains('show', 'open')){
+            card.classList.remove('show', 'open');
+        }
+
+        deck.appendChild(card);
+    }
     resetGame();
 })
 function resetGame(){
+    //have to empty the selected cards array on reset, else it will check the selected card
+    //with previous selected card stored in this array
+    if (arrOfOpenCards.length){
+        arrOfOpenCards.splice(0);
+    }
     minutesLabel.innerHTML = 0 + 'mins ';
     secondsLabel.innerHTML = 0 + 'secs';
     minute = 0;
@@ -183,7 +202,13 @@ function resetGame(){
     match = 0;
     moveEl.textContent = move;
     cardsArray.forEach(function(card){
-        card.classList.remove('match');
+        if (card.classList.contains('match')){
+            card.classList.remove('match');
+        }
+
+        if (card.style.pointerEvents === 'none'){
+            card.style.pointerEvents = 'auto';
+        }
     })
     starsArr.forEach(function(star){
         star.classList.remove('star-display');
